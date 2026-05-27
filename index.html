@@ -1,0 +1,634 @@
+     <!DOCTYPE html>
+     <html lang="en">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Link Shortener</title>
+         <link rel="preconnect" href="https://fonts.googleapis.com">
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap"
+     rel="stylesheet">
+
+         <style>
+              {
+                 margin: 0;
+                 padding: 0;
+                 box-sizing: border-box;
+             }
+
+             :root {
+                 --primary-bg: #0f172a;
+                 --secondary-bg: #1a2847;
+                 --card-bg: #1f3a5f;
+                 --text-primary: #ffffff;
+                 --text-secondary: #94a3b8;
+                 --accent: #3b82f6;
+                 --accent-hover: #2563eb;
+                 --border: #334155;
+                 --success: #10b981;
+                 --error: #ef4444;
+             }
+
+             html {
+                 scroll-behavior: smooth;
+             }
+
+             body {
+                 font-family: 'Inter', sans-serif;
+                 background-color: var(--primary-bg);
+                 color: var(--text-primary);
+                 line-height: 1.6;
+                 min-height: 100vh;
+             }
+
+             / Navigation Bar /
+             nav {
+                 background-color: var(--secondary-bg);
+                 padding: 1.5rem 2rem;
+                 border-bottom: 1px solid var(--border);
+                 backdrop-filter: blur(10px);
+             }
+
+             .nav-container {
+                 max-width: 1200px;
+                 margin: 0 auto;
+                 display: flex;
+                 justify-content: space-between;
+                 align-items: center;
+             }
+
+             .logo {
+                 font-family: 'Poppins', sans-serif;
+                 font-size: 1.5rem;
+                 font-weight: 700;
+                 background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+                 background-clip: text;
+             }
+
+             / Container /
+             .container {
+                 max-width: 900px;
+                 margin: 0 auto;
+                 padding: 4rem 2rem;
+             }
+
+             .header {
+                 text-align: center;
+                 margin-bottom: 4rem;
+             }
+
+             .header h1 {
+                 font-family: 'Poppins', sans-serif;
+                 font-size: 3rem;
+                 font-weight: 800;
+                 margin-bottom: 0.5rem;
+                 background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
+                 -webkit-background-clip: text;
+                 -webkit-text-fill-color: transparent;
+                 background-clip: text;
+             }
+
+             .header p {
+                 font-size: 1.1rem;
+                 color: var(--text-secondary);
+                 font-weight: 300;
+             }
+
+             / Input Section /
+             .shortener-box {
+                 background-color: var(--card-bg);
+                 border: 1px solid var(--border);
+                 border-radius: 12px;
+                 padding: 2.5rem;
+                 margin-bottom: 3rem;
+                 animation: slideUp 0.8s ease-out;
+             }
+
+             @keyframes slideUp {
+                 from {
+                     opacity: 0;
+                     transform: translateY(30px);
+                 }
+                 to {
+                     opacity: 1;
+                     transform: translateY(0);
+                 }
+             }
+
+             .form-group {
+                 margin-bottom: 1.5rem;
+             }
+
+             .form-group label {
+                 display: block;
+                 margin-bottom: 0.5rem;
+                 font-weight: 600;
+                 color: var(--text-primary);
+             }
+
+             .form-group input {
+                 width: 100%;
+                 padding: 1rem;
+                 background-color: rgba(31, 58, 95, 0.5);
+                 border: 1px solid var(--border);
+                 border-radius: 8px;
+                 color: var(--text-primary);
+                 font-size: 1rem;
+                 font-family: 'Inter', sans-serif;
+                 transition: all 0.3s ease;
+             }
+
+             .form-group input:focus {
+                 outline: none;
+                 border-color: var(--accent);
+                 box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+                 background-color: var(--card-bg);
+             }
+
+             .form-group input::placeholder {
+                 color: var(--text-secondary);
+             }
+
+             .input-hint {
+                 font-size: 0.875rem;
+                 color: var(--text-secondary);
+                 margin-top: 0.5rem;
+             }
+
+             .btn-group {
+                 display: flex;
+                 gap: 1rem;
+                 flex-wrap: wrap;
+             }
+
+             .btn {
+                 flex: 1;
+                 min-width: 150px;
+                 padding: 1rem 2rem;
+                 border: none;
+                 border-radius: 8px;
+                 font-size: 1rem;
+                 font-weight: 600;
+                 font-family: 'Inter', sans-serif;
+                 cursor: pointer;
+                 transition: all 0.3s ease;
+             }
+
+             .btn-primary {
+                 background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+                 color: white;
+                 box-shadow: 0 10px 25px rgba(59, 130, 246, 0.3);
+             }
+
+             .btn-primary:hover {
+                 transform: translateY(-2px);
+                 box-shadow: 0 15px 35px rgba(59, 130, 246, 0.4);
+             }
+
+             .btn-secondary {
+                 background-color: var(--secondary-bg);
+                 color: var(--text-primary);
+                 border: 1px solid var(--border);
+             }
+
+             .btn-secondary:hover {
+                 border-color: var(--accent);
+                 color: var(--accent);
+             }
+
+             .btn:active {
+                 transform: translateY(0);
+             }
+
+             / Results Section /
+             .results-container {
+                 display: none;
+                 animation: slideUp 0.8s ease-out;
+             }
+
+             .results-container.show {
+                 display: block;
+             }
+
+             .result-card {
+                 background-color: var(--card-bg);
+                 border: 1px solid var(--border);
+                 border-radius: 12px;
+                 padding: 2rem;
+                 margin-bottom: 1.5rem;
+                 transition: all 0.3s ease;
+             }
+
+             .result-card:hover {
+                 border-color: var(--accent);
+                 box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15);
+             }
+
+             .result-label {
+                 font-size: 0.875rem;
+                 color: var(--text-secondary);
+                 margin-bottom: 0.5rem;
+                 text-transform: uppercase;
+                 font-weight: 600;
+                 letter-spacing: 0.5px;
+             }
+
+             .result-value {
+                 font-size: 1.25rem;
+                 color: var(--text-primary);
+                 word-break: break-all;
+                 margin-bottom: 1rem;
+                 padding: 1rem;
+                 background-color: rgba(31, 58, 95, 0.5);
+                 border-radius: 6px;
+                 border-left: 3px solid var(--accent);
+             }
+
+             .copy-btn {
+                 width: 100%;
+                 padding: 0.75rem;
+                 background-color: var(--secondary-bg);
+                 color: var(--text-primary);
+                 border: 1px solid var(--border);
+                 border-radius: 6px;
+                 font-size: 0.95rem;
+                 font-weight: 600;
+                 cursor: pointer;
+                 transition: all 0.3s ease;
+             }
+
+             .copy-btn:hover {
+                 background-color: var(--accent);
+                 border-color: var(--accent);
+             }
+
+             .copy-btn.copied {
+                 background-color: var(--success);
+                 border-color: var(--success);
+             }
+
+             / Stats Section /
+             .stats {
+                 display: grid;
+                 grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+                 gap: 1.5rem;
+                 margin-bottom: 3rem;
+             }
+
+             .stat-card {
+                 background-color: var(--card-bg);
+                 border: 1px solid var(--border);
+                 border-radius: 12px;
+                 padding: 1.5rem;
+                 text-align: center;
+                 transition: all 0.3s ease;
+             }
+
+             .stat-card:hover {
+                 border-color: var(--accent);
+                 transform: translateY(-4px);
+             }
+
+             .stat-number {
+                 font-size: 2rem;
+                 font-weight: 700;
+                 color: var(--accent);
+                 margin-bottom: 0.5rem;
+             }
+
+             .stat-label {
+                 color: var(--text-secondary);
+                 font-size: 0.95rem;
+                 font-weight: 500;
+             }
+
+             / Footer /
+             footer {
+                 background-color: var(--secondary-bg);
+                 border-top: 1px solid var(--border);
+                 padding: 2rem;
+                 text-align: center;
+                 margin-top: 4rem;
+             }
+
+             footer p {
+                 color: var(--text-secondary);
+                 font-weight: 500;
+             }
+
+             footer a {
+                 color: var(--accent);
+                 text-decoration: none;
+                 transition: color 0.3s ease;
+             }
+
+             footer a:hover {
+                 color: var(--accent-hover);
+             }
+
+             / Responsive /
+             @media (max-width: 768px) {
+                 .header h1 {
+                     font-size: 2rem;
+                 }
+
+                 .header p {
+                     font-size: 1rem;
+                 }
+
+                 .shortener-box {
+                     padding: 1.5rem;
+                 }
+
+                 .btn-group {
+                     flex-direction: column;
+                 }
+
+                 .btn {
+                     min-width: auto;
+                 }
+
+                 .stats {
+                     grid-template-columns: 1fr;
+                 }
+             }
+
+             @media (max-width: 480px) {
+                 .container {
+                     padding: 2rem 1rem;
+                 }
+
+                 .header h1 {
+                     font-size: 1.5rem;
+                 }
+
+                 .shortener-box {
+                     padding: 1rem;
+                 }
+
+                 .stat-number {
+                     font-size: 1.5rem;
+                 }
+             }
+
+             / Alert Messages /
+             .alert {
+                 padding: 1rem;
+                 border-radius: 8px;
+                 margin-bottom: 1rem;
+                 display: none;
+             }
+
+             .alert.show {
+                 display: block;
+             }
+
+             .alert-success {
+                 background-color: rgba(16, 185, 129, 0.1);
+                 border: 1px solid var(--success);
+                 color: var(--success);
+             }
+
+             .alert-error {
+                 background-color: rgba(239, 68, 68, 0.1);
+                 border: 1px solid var(--error);
+                 color: var(--error);
+             }
+
+             / Scrollbar /
+             ::-webkit-scrollbar {
+                 width: 10px;
+             }
+
+             ::-webkit-scrollbar-track {
+                 background: var(--primary-bg);
+             }
+
+             ::-webkit-scrollbar-thumb {
+                 background: var(--border);
+                 border-radius: 5px;
+             }
+
+             ::-webkit-scrollbar-thumb:hover {
+                 background: var(--accent);
+             }
+         </style>
+     </head>
+     <body>
+         <!-- Navigation -->
+         <nav>
+             <div class="nav-container">
+                 <div class="logo">🔗 Link Shortener</div>
+             </div>
+         </nav>
+
+         <!-- Main Container -->
+         <div class="container">
+             <!-- Header -->
+             <div class="header">
+                 <h1>Link Shortener</h1>
+                 <p>Create short, shareable links instantly</p>
+             </div>
+
+             <!-- Stats -->
+             <div class="stats">
+                 <div class="stat-card">
+                     <div class="stat-number" id="totalLinks">0</div>
+                     <div class="stat-label">Links Created</div>
+                 </div>
+                 <div class="stat-card">
+                     <div class="stat-number" id="totalClicks">0</div>
+                     <div class="stat-label">Total Clicks</div>
+                 </div>
+                 <div class="stat-card">
+                     <div class="stat-number" id="totalShortened">0 KB</div>
+                     <div class="stat-label">Space Saved</div>
+                 </div>
+             </div>
+
+             <!-- Alert Messages -->
+             <div class="alert alert-success" id="successAlert">
+                 ✓ Link copied to clipboard!
+             </div>
+             <div class="alert alert-error" id="errorAlert">
+                 ✗ Please enter a valid URL
+             </div>
+
+             <!-- Shortener Box -->
+             <div class="shortener-box">
+                 <div class="form-group">
+                     <label for="longUrl">Enter Your Long URL</label>
+                     <input
+                         type="url"
+                         id="longUrl"
+                         placeholder="https://example.com/very/long/url/that/needs/shortening"
+                         aria-label="Long URL input"
+                     >
+                     <div class="input-hint">Paste any URL to generate a shorter link</div>
+                 </div>
+
+                 <div class="form-group">
+                     <label for="customAlias">Custom Alias (Optional)</label>
+                     <input
+                         type="text"
+                         id="customAlias"
+                         placeholder="e.g., my-project"
+                         aria-label="Custom alias input"
+                     >
+                     <div class="input-hint">Create a custom short code for your link</div>
+                 </div>
+
+                 <div class="btn-group">
+                     <button class="btn btn-primary" onclick="shortenLink()">Generate Short Link</button>
+                     <button class="btn btn-secondary" onclick="clearForm()">Clear</button>
+                 </div>
+             </div>
+
+             <!-- Results -->
+             <div class="results-container" id="resultsContainer">
+                 <h2 style="font-size: 1.5rem; margin-bottom: 1.5rem; font-family: 'Poppins', sans-serif;">Your Shortened Link</h2>
+
+                 <div class="result-card">
+                     <div class="result-label">Original URL</div>
+                     <div class="result-value" id="originalUrl"></div>
+                 </div>
+
+                 <div class="result-card">
+                     <div class="result-label">Shortened URL</div>
+                     <div class="result-value" id="shortenedUrl"></div>
+                     <button class="copy-btn" onclick="copyToClipboard()">📋 Copy Short Link</button>
+                 </div>
+
+                 <div class="result-card">
+                     <div class="result-label">QR Code</div>
+                     <div style="text-align: center; padding: 1rem; background-color: rgba(31, 58, 95, 0.5); border-radius: 6px;">
+                         <img id="qrCode" src="" alt="QR Code" style="width: 150px; height: 150px;">
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         <!-- Footer -->
+         <footer>
+             <p>Made by <a href="https://github.com/Hndrd0" target="blank">Hardik</a></p>
+         </footer>
+
+         <script>
+             // Generate random short code
+             function generateShortCode() {
+                 const chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+                 let result = '';
+                 for (let i = 0; i < 6; i++) {
+                     result += chars.charAt(Math.floor(Math.random()  chars.length));
+                 }
+                 return result;
+             }
+
+             // Validate URL
+             function isValidUrl(string) {
+                 try {
+                     new URL(string);
+                     return true;
+                 } catch () {
+                     return false;
+                 }
+             }
+
+             // Shorten link
+             function shortenLink() {
+                 const longUrl = document.getElementById('longUrl').value.trim();
+                 const customAlias = document.getElementById('customAlias').value.trim();
+                 const errorAlert = document.getElementById('errorAlert');
+
+                 if (!longUrl) {
+                     errorAlert.textContent = '✗ Please enter a URL';
+                     errorAlert.classList.add('show');
+                     setTimeout(() => errorAlert.classList.remove('show'), 3000);
+                     return;
+                 }
+
+                 if (!isValidUrl(longUrl)) {
+                     errorAlert.textContent = '✗ Please enter a valid URL';
+                     errorAlert.classList.add('show');
+                     setTimeout(() => errorAlert.classList.remove('show'), 3000);
+                     return;
+                 }
+
+                 // Generate short code
+                 const shortCode = customAlias || generateShortCode();
+                 const shortUrl = short.link/${shortCode};
+
+                 // Display results
+                 document.getElementById('originalUrl').textContent = longUrl;
+                 document.getElementById('shortenedUrl').textContent = shortUrl;
+
+                 // Generate QR Code (using qr-server API)
+                 const qrCodeUrl = https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(shortUrl)};
+                 document.getElementById('qrCode').src = qrCodeUrl;
+
+                 // Show results
+                 document.getElementById('resultsContainer').classList.add('show');
+
+                 // Update stats
+                 updateStats(longUrl);
+
+                 // Scroll to results
+                 setTimeout(() => {
+                     document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth' });
+                 }, 100);
+             }
+
+             // Copy to clipboard
+             function copyToClipboard() {
+                 const shortUrl = document.getElementById('shortenedUrl').textContent;
+                 navigator.clipboard.writeText(shortUrl).then(() => {
+                     const successAlert = document.getElementById('successAlert');
+                     successAlert.classList.add('show');
+
+                     const btn = event.target;
+                     btn.textContent = '✓ Copied!';
+                     btn.classList.add('copied');
+
+                     setTimeout(() => {
+                         successAlert.classList.remove('show');
+                         btn.textContent = '📋 Copy Short Link';
+                         btn.classList.remove('copied');
+                     }, 2000);
+                 });
+             }
+
+             // Update stats
+             function updateStats(url) {
+                 const totalLinks = parseInt(document.getElementById('totalLinks').textContent) + 1;
+                 const totalClicks = parseInt(document.getElementById('totalClicks').textContent) + Math.floor(Math.random()  100);
+                 const savedBytes = (url.length  totalLinks) / 1024;
+
+                 document.getElementById('totalLinks').textContent = totalLinks;
+                 document.getElementById('totalClicks').textContent = totalClicks;
+                 document.getElementById('totalShortened').textContent = Math.ceil(savedBytes) + ' KB';
+             }
+
+             // Clear form
+             function clearForm() {
+                 document.getElementById('longUrl').value = '';
+                 document.getElementById('customAlias').value = '';
+                 document.getElementById('resultsContainer').classList.remove('show');
+             }
+
+             // Allow Enter key
+             document.getElementById('longUrl').addEventListener('keypress', function(e) {
+                 if (e.key === 'Enter') {
+                     shortenLink();
+                 }
+             });
+
+             document.getElementById('customAlias').addEventListener('keypress', function(e) {
+                 if (e.key === 'Enter') {
+                     shortenLink();
+                 }
+             });
+         </script>
+     </body>
+     </html>
